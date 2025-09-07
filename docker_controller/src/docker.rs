@@ -8,7 +8,7 @@ pub async fn start_instance(req: SessionRequest) -> Result<impl warp::Reply, war
     let docker = Docker::new();
     let uuid = Uuid::new_v4().to_string();
 
-    let container_opts = ContainerOptions::builder("docker.io/library/dockerfile")
+    let container_opts = ContainerOptions::builder("docker.io/library/icp_image")
         .name(&uuid)
         .env(vec!["PASSWORD=icpad", "DOCKER_USER=node"])
         .expose(8443, "tcp", 0)
@@ -24,7 +24,7 @@ pub async fn start_instance(req: SessionRequest) -> Result<impl warp::Reply, war
 
             let response = SessionResponse {
                 container_id: id.clone(),
-                editor_url: format!("http://your-server.com:PORT/{}", id), // Replace with reverse proxy logic
+                editor_url: format!("https://fdbe92cd247b.ngrok-free.app/{}", id), // Replace with reverse proxy logic
             };
             Ok(warp::reply::with_status(json(&response), StatusCode::OK))
         }
